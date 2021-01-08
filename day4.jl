@@ -1,6 +1,13 @@
+using BenchmarkTools
 using LinearAlgebra
 cd("/Users/Marc/Dev/Advent Of Code/")
-fields = Dict("byr"=>(1920,2002),"iyr"=>(2010,2020),"eyr"=>(2020,2030),"hgt"=>r"^(1([5-8][0-9]|9[0-3])cm|(59|6[0-9]|7[0-6])in)$","hcl"=>r"^#[0-9a-f]{6}$","ecl"=>r"^(amb|blu|brn|gry|grn|hzl|oth)$","pid"=>r"^[0-9]{9}$")
+#fields = Dict("byr"=>(1920,2002),"iyr"=>(2010,2020),"eyr"=>(2020,2030),"hgt"=>r"^(1([5-8][0-9]|9[0-3])cm|(59|6[0-9]|7[0-6])in)$","hcl"=>r"^#[0-9a-f]{6}$","ecl"=>r"^(amb|blu|brn|gry|grn|hzl|oth)$","pid"=>r"^[0-9]{9}$")
+fields = Dict("byr"=>1920:2002,"iyr"=>2010:2020,"eyr"=>2020:2030,"hgt"=>r"^(1([5-8][0-9]|9[0-3])cm|(59|6[0-9]|7[0-6])in)$","hcl"=>r"^#[0-9a-f]{6}$","ecl"=>r"^(amb|blu|brn|gry|grn|hzl|oth)$","pid"=>r"^[0-9]{9}$")
+
+function validateField(val::String,limits::UnitRange)::Bool
+    val = parse(Int,val)
+    return (val ∈ limits) ? true : false
+end
 
 function validateField(val::String,(min,max)::Tuple{Int64,Int64})::Bool
     val = parse(Int,val)
@@ -37,4 +44,5 @@ function countPassports(fileName::AbstractString)::Int64
 end
 
 fileName = "data/input_4.txt"
+@btime countPassports(fileName)
 println(countPassports(fileName))
